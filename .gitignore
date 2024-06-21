@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/STEncrypt/obj
+/STEncrypt/.vs/STEncrypt
+/STEncrypt/.vs/ProjectEvaluation
+/STEncrypt/bin/Debug/net8.0
