@@ -30,22 +30,25 @@ namespace STEncrypt
                     case "Encrypt text":
                         do
                         {
-                            Console.WriteLine("Provide text below:");
+                            Colorizator(ConsoleColor.DarkGreen, "Provide text below:");    
                             input = Console.ReadLine();
                             if (input.Length == 0) Console.WriteLine("Input cannot be empty!");
                         }
                         while (input.Length == 0);
                         var encryptedStringAndKey = Encrypt(input);
-                        Console.WriteLine($"Encrypted text: {encryptedStringAndKey.Item1}");
+                        Colorizator(ConsoleColor.DarkGreen, "Encrypted text: ", false);
+                        Console.WriteLine($"{encryptedStringAndKey.Item1}");
                         Console.ReadKey();
                         break;
                     case "Decrypt text":
                         do
                         {
-                            Console.Write("Provide text to decrypt: ");
+                            Colorizator(ConsoleColor.DarkGreen, "Provide text to decrypt: ");
                             input = Console.ReadLine();
-                            Console.Write("Provide key: ");
+
+                            Colorizator(ConsoleColor.DarkGreen, "Provide key: ");
                             key = Console.ReadLine();
+
                             if (input.Length == 0 || key.Length==0) Console.WriteLine("Text or key cannot be empty!");
                         }
                         while (input.Length == 0);
@@ -67,11 +70,10 @@ namespace STEncrypt
 
             using (Aes aes = Aes.Create())
             {
-
-                // var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
                 aes.Key = GenerateRandomKey(256);
                 keyValue = aes.Key;
-                Console.WriteLine($"Encryption key: {Convert.ToBase64String(aes.Key)}");
+                Colorizator(ConsoleColor.DarkGreen, "Encryption key: ",false);
+                Console.WriteLine($"{Convert.ToBase64String(aes.Key)}");
                 aes.IV = iv;
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
@@ -106,8 +108,7 @@ namespace STEncrypt
                 }
                 catch (Exception)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("INVALID KEY!");
+                    Colorizator(ConsoleColor.Red, "INVALID KEY!");
                     return "";
                 }
 
@@ -132,8 +133,7 @@ namespace STEncrypt
                 }
                 catch (Exception)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("INVALID TEXT!");
+                    Colorizator(ConsoleColor.Red, "INVALID KEY!");
                     return "";
                 }
             }
@@ -173,9 +173,10 @@ namespace STEncrypt
                 {
                     if (i == selectedIndex)
                     {
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine("> " + options[i]);
-                        Console.ResetColor();
+                        //Console.ForegroundColor = ConsoleColor.Magenta;
+                        //Console.WriteLine("> " + options[i]);
+                        //Console.ResetColor();
+                        Colorizator(ConsoleColor.Magenta, "> " + options[i]);
                     }
                     else
                     {
@@ -205,6 +206,22 @@ namespace STEncrypt
             Console.Clear();
             
             return new Tuple<string,bool>(options[selectedIndex],closeApp);
+        }
+
+        private static void Colorizator(ConsoleColor color,string message,bool newLine = true)
+        {
+            if (newLine)
+            {
+                Console.ForegroundColor = color;
+                Console.WriteLine(message);
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = color;
+                Console.Write(message);
+                Console.ResetColor();
+            }
         }
     }
     
